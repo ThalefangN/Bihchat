@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercises - NalediAI Mental Health</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        :root {
+            --bg-primary: #13131a;
+            --bg-secondary: #1c1c24;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+        }
+
+        .light-mode {
+            --bg-primary: #f7fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .theme-card {
+            background-color: var(--bg-secondary);
+        }
+
+        /* Navigation Styles */
+        .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #22c55e;
+            background-color: rgba(34, 197, 94, 0.1);
+        }
+
+        .nav-link i {
+            margin-right: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        /* Toggle Switch Styles */
+        .toggle-switch {
+            width: 50px;
+            height: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #4a5568;
+            transition: 0.4s;
+            border-radius: 25px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 19px;
+            width: 19px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #22c55e;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(25px);
+        }
+
+        .toggle-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .sun-icon {
+            right: 7px;
+        }
+
+        .moon-icon {
+            left: 7px;
+        }
+
+        /* Exercise Card Styles */
+        .exercise-card {
+            transition: transform 0.3s ease;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .category-tab {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-tab.active {
+            background-color: #22c55e;
+            color: white;
+        }
+
+        .category-tab:hover:not(.active) {
+            background-color: rgba(34, 197, 94, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Theme Toggle and Profile -->
+    <header class="fixed w-full top-0 z-50 theme-card shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold">NalediAI</h1>
+                </div>
+
+                <!-- Right Side Controls -->
+                <div class="flex items-center space-x-6">
+                    <!-- Theme Toggle -->
+                    <div class="flex items-center">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="themeToggle">
+                            <span class="toggle-slider">
+                                <i class="ti ti-sun toggle-icon sun-icon"></i>
+                                <i class="ti ti-moon toggle-icon moon-icon"></i>
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Profile/Logout Button -->
+                    <div class="relative">
+                        <button id="profileBtn" class="flex items-center space-x-2 px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white transition-all duration-300">
+                            <i class="ti ti-user"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-24">
+        <!-- Navigation -->
+        <nav class="theme-card p-4 rounded-lg mb-6">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex gap-4">
+                    <a href="chat.html" class="nav-link">
+                        <i class="ti ti-messages-2"></i>
+                        Chat
+                    </a>
+                    <a href="incognito-chat.html" class="nav-link">
+                        <i class="ti ti-incognito"></i>
+                        Incognito Chat
+                    </a>
+                    <a href="wearables.html" class="nav-link">
+                        <i class="ti ti-device-watch"></i>
+                        Wearables
+                    </a>
+                    <a href="exercises.html" class="nav-link">
+                        <i class="ti ti-activity"></i>
+                        Exercises
+                    </a>
+                    <a href="resources.html" class="nav-link">
+                        <i class="ti ti-books"></i>
+                        Resources
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Exercise Categories -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold mb-4">Mental Wellness Exercises</h2>
+            <div class="flex space-x-4 mb-6 overflow-x-auto pb-2">
+                <div class="category-tab active px-4 py-2 rounded-lg">
+                    All Exercises
+                </div>
+                <div class="category-tab px-4 py-2 rounded-lg">
+                    Meditation
+                </div>
+                <div class="category-tab px-4 py-2 rounded-lg">
+                    Breathing
+                </div>
+                <div class="category-tab px-4 py-2 rounded-lg">
+                    Mindfulness
+                </div>
+                <div class="category-tab px-4 py-2 rounded-lg">
+                    Journaling
+                </div>
+            </div>
+
+            <!-- Exercise Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Exercise Card 1 -->
+                <div class="theme-card rounded-xl p-4 exercise-card">
+                    <div class="relative">
+                        <div class="h-48 bg-green-600 bg-opacity-10 rounded-lg flex items-center justify-center mb-4">
+                            <i class="ti ti-brain text-5xl text-green-500"></i>
+                        </div>
+                        <span class="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">
+                            5 min
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Mindful Breathing</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        A simple breathing exercise to help you stay present and reduce anxiety.
+                    </p>
+                    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition-colors duration-300">
+                        Start Exercise
+                    </button>
+                </div>
+
+                <!-- Exercise Card 2 -->
+                <div class="theme-card rounded-xl p-4 exercise-card">
+                    <div class="relative">
+                        <div class="h-48 bg-blue-600 bg-opacity-10 rounded-lg flex items-center justify-center mb-4">
+                            <i class="ti ti-yoga text-5xl text-blue-500"></i>
+                        </div>
+                        <span class="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">
+                            10 min
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Body Scan Meditation</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        A guided meditation to help you relax and release tension throughout your body.
+                    </p>
+                    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition-colors duration-300">
+                        Start Exercise
+                    </button>
+                </div>
+
+                <!-- Exercise Card 3 -->
+                <div class="theme-card rounded-xl p-4 exercise-card">
+                    <div class="relative">
+                        <div class="h-48 bg-purple-600 bg-opacity-10 rounded-lg flex items-center justify-center mb-4">
+                            <i class="ti ti-pencil text-5xl text-purple-500"></i>
+                        </div>
+                        <span class="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">
+                            15 min
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Gratitude Journal</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        Practice gratitude by writing down three things you're thankful for today.
+                    </p>
+                    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition-colors duration-300">
+                        Start Exercise
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="theme-card rounded-xl p-6 mb-8">
+            <h3 class="text-xl font-bold mb-4">Your Progress</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 bg-opacity-10 bg-green-600 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm">Weekly Goal</span>
+                        <span class="text-green-500">4/5 completed</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="p-4 bg-opacity-10 bg-blue-600 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm">Streak</span>
+                        <span class="text-blue-500">5 days</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <div class="w-8 h-1 bg-blue-500 rounded"></div>
+                        <div class="w-8 h-1 bg-blue-500 rounded"></div>
+                        <div class="w-8 h-1 bg-blue-500 rounded"></div>
+                        <div class="w-8 h-1 bg-blue-500 rounded"></div>
+                        <div class="w-8 h-1 bg-blue-500 rounded"></div>
+                        <div class="w-8 h-1 bg-gray-300 rounded"></div>
+                        <div class="w-8 h-1 bg-gray-300 rounded"></div>
+                    </div>
+                </div>
+                <div class="p-4 bg-opacity-10 bg-purple-600 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm">Total Time</span>
+                        <span class="text-purple-500">125 minutes</span>
+                    </div>
+                    <p class="text-sm text-gray-400">This week</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeToggle.checked = true;
+        }
+
+        themeToggle.addEventListener('change', () => {
+            if (themeToggle.checked) {
+                body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Category Tab Functionality
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+
+        // Profile/Logout Button
+        document.getElementById('profileBtn').addEventListener('click', () => {
+            localStorage.removeItem('userData');
+            localStorage.removeItem('sessionActive');
+            sessionStorage.removeItem('sessionActive');
+            window.location.href = 'signin.html';
+        });
+
+        // Check if user is logged in
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('sessionActive') || sessionStorage.getItem('sessionActive');
+            if (!isLoggedIn) {
+                window.location.href = 'signin.html';
+            }
+        }
+
+        // Run auth check when page loads
+        checkAuth();
+    </script>
+</body>
+</html>

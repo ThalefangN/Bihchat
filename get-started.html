@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started - Beat Cancer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        .slides-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .slides-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+            opacity: 0.5;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+        .progress-bar {
+            height: 4px;
+            background: #2D3748;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #3B82F6;
+            transition: width 0.5s ease-in-out;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-[#13131a] text-white min-h-screen">
+    <div class="flex min-h-screen">
+        <!-- Left Panel - Content -->
+        <div class="w-1/2 p-12 flex flex-col justify-between">
+            <div>
+                <h1 class="text-4xl font-bold mb-8">Beat Cancer</h1>
+                <div class="slides-container h-96">
+                    <div class="slides-track h-full">
+                        <!-- Slide 1 -->
+                        <div class="slide active">
+                            <h2 class="text-3xl font-bold mb-6">Track Your Medical Journey</h2>
+                            <p class="text-xl text-gray-400 leading-relaxed">
+                                Keep all your medical records organized and accessible in one place. 
+                                Monitor your progress and stay on top of your treatment plan with our 
+                                intuitive tracking system.
+                            </p>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="slide">
+                            <h2 class="text-3xl font-bold mb-6">Never Miss an Appointment</h2>
+                            <p class="text-xl text-gray-400 leading-relaxed">
+                                Schedule and track your medical appointments, screenings, and follow-ups. 
+                                Our smart reminder system ensures you stay on schedule with your treatment 
+                                and never miss important appointments.
+                            </p>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="slide">
+                            <h2 class="text-3xl font-bold mb-6">Organize Your Treatment Plan</h2>
+                            <p class="text-xl text-gray-400 leading-relaxed">
+                                Use our Kanban board to manage your treatment tasks and track your progress. 
+                                Stay organized and focused on your recovery journey with our visual task 
+                                management system.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="mt-auto">
+                <!-- Progress Bar -->
+                <div class="progress-bar mb-8">
+                    <div class="progress-fill" style="width: 33.33%"></div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <button id="prevBtn" class="p-2 text-gray-400 hover:text-white hidden">
+                            <i class="ti ti-chevron-left text-xl"></i>
+                        </button>
+                        <span id="slideCounter" class="text-sm text-gray-400">1 of 3</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button id="skipBtn" class="text-sm text-gray-400 hover:text-green-400">
+                            Skip intro
+                        </button>
+                        <button id="nextBtn" class="btn-primary px-8 py-3 rounded-lg text-white font-semibold">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Image -->
+        <div class="w-1/2 bg-[#1c1c24] flex items-center justify-center">
+            <div class="relative w-full h-full">
+                <!-- Slide 1 Image -->
+                <div class="slide-image absolute inset-0 flex items-center justify-center transition-opacity duration-500" data-slide="0">
+                    <i class="ti ti-notes text-9xl text-green-500"></i>
+                </div>
+                <!-- Slide 2 Image -->
+                <div class="slide-image absolute inset-0 flex items-center justify-center transition-opacity duration-500 opacity-0" data-slide="1">
+                    <i class="ti ti-calendar text-9xl text-green-500"></i>
+                </div>
+                <!-- Slide 3 Image -->
+                <div class="slide-image absolute inset-0 flex items-center justify-center transition-opacity duration-500 opacity-0" data-slide="2">
+                    <i class="ti ti-layout-kanban text-9xl text-green-500"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user has seen the get started page
+        if (localStorage.getItem('hasSeenGetStarted')) {
+            window.location.href = 'onboarding.html';
+        }
+
+        const slidesTrack = document.querySelector('.slides-track');
+        const slides = document.querySelectorAll('.slide');
+        const slideImages = document.querySelectorAll('.slide-image');
+        const progressFill = document.querySelector('.progress-fill');
+        const slideCounter = document.getElementById('slideCounter');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const skipBtn = document.getElementById('skipBtn');
+
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        function updateSlide(index) {
+            // Update slides position
+            slidesTrack.style.transform = `translateX(-${index * 100}%)`;
+            
+            // Update active states
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+
+            // Update images
+            slideImages.forEach((img, i) => {
+                img.style.opacity = i === index ? '1' : '0';
+            });
+
+            // Update progress bar
+            const progress = ((index + 1) / totalSlides) * 100;
+            progressFill.style.width = `${progress}%`;
+
+            // Update counter
+            slideCounter.textContent = `${index + 1} of ${totalSlides}`;
+
+            // Update navigation
+            prevBtn.classList.toggle('hidden', index === 0);
+            
+            // Update next button text
+            if (index === totalSlides - 1) {
+                nextBtn.textContent = 'Get Started';
+            } else {
+                nextBtn.textContent = 'Next';
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide(currentSlide);
+            } else {
+                completeOnboarding();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide(currentSlide);
+            }
+        }
+
+        function completeOnboarding() {
+            localStorage.setItem('hasSeenGetStarted', 'true');
+            window.location.href = 'onboarding.html';
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+        skipBtn.addEventListener('click', completeOnboarding);
+
+        // Initialize
+        updateSlide(0);
+    </script>
+</body>
+</html>
